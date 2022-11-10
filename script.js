@@ -99,6 +99,18 @@ let displayMovements = function (movements) {
 displayMovements(account1.movements)
   
 
+
+let calcDisplayBalance = function ( movements) {
+  let balance = movements.reduce((acc , mov) => {
+    return acc + mov
+  }, 0)
+
+  labelBalance.textContent = `${balance} EUR`
+}
+
+calcDisplayBalance(account1.movements)
+
+
 let createUserName = function(accts) {
 
   accts.forEach((acc) => {
