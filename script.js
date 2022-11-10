@@ -96,5 +96,21 @@ let displayMovements = function (movements) {
   });
 
 }
- 
 displayMovements(account1.movements)
+  
+
+let createUserName = function(accts) {
+
+  accts.forEach((acc) => {
+
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map((name) => name[0])
+      .join('')
+  })
+
+}
+createUserName(accounts)
+// const accounts = [account1, account2, account3, account4];
+console.log(accounts);
