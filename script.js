@@ -87,7 +87,7 @@ let displayMovements = function (movements) {
 
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-      <div class="movements__value">${mov}</div>
+      <div class="movements__value">${mov}€</div>
     </div>
 
     `
@@ -105,10 +105,35 @@ let calcDisplayBalance = function ( movements) {
     return acc + mov
   }, 0)
 
-  labelBalance.textContent = `${balance} EUR`
+  labelBalance.textContent = `${balance} €`
 }
-
 calcDisplayBalance(account1.movements)
+
+
+let calDisplaySummary = function (movements) {
+  let income = movements
+    .filter(mov => mov > 0)
+    .reduce((acc , mov) => acc + mov , 0) 
+  labelSumIn.textContent = `${income}€`
+
+  let Out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc,mov) => acc + mov, 0) 
+  labelSumOut.textContent = `${Math.abs(Out)}€`  
+
+  let interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2 / 100))
+    .filter((int , i , arr) => {
+      console.log(arr);
+      return int >= 1
+    })
+    .reduce((acc , int) => acc + int, 0)
+  labelSumInterest.textContent = `${interest}€`  
+};
+
+
+calDisplaySummary(account1.movements)
 
 
 let createUserName = function(accts) {
