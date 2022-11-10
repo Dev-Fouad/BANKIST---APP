@@ -96,7 +96,6 @@ let displayMovements = function (movements) {
   });
 
 }
-displayMovements(account1.movements)
   
 
 
@@ -110,20 +109,20 @@ let calcDisplayBalance = function ( movements) {
 calcDisplayBalance(account1.movements)
 
 
-let calDisplaySummary = function (movements) {
-  let income = movements
+let calDisplaySummary = function (acc) {
+  let income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc , mov) => acc + mov , 0) 
   labelSumIn.textContent = `${income}€`
 
-  let Out = movements
+  let Out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc,mov) => acc + mov, 0) 
   labelSumOut.textContent = `${Math.abs(Out)}€`  
 
-  let interest = movements
+  let interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2 / 100))
+    .map(deposit => (deposit * acc.interestRate / 100))
     .filter((int , i , arr) => {
       console.log(arr);
       return int >= 1
@@ -133,7 +132,6 @@ let calDisplaySummary = function (movements) {
 };
 
 
-calDisplaySummary(account1.movements)
 
 
 let createUserName = function(accts) {
@@ -151,3 +149,35 @@ let createUserName = function(accts) {
 createUserName(accounts)
 // const accounts = [account1, account2, account3, account4];
 console.log(accounts);
+
+
+let currentAccount;
+// Event Handler
+btnLogin.addEventListener('click' , function (e) {
+  // Prevent form from submitting
+  e.preventDefault();
+
+  currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value)
+  console.log(currentAccount);
+
+  if(currentAccount?.pin === Number(inputLoginPin.value)){
+    // Display UI and message
+    labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
+    containerApp.style.opacity = 100;
+
+    //Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = ''
+    inputLoginPin.blur();
+
+    // Display Movements
+    displayMovements(currentAccount.movements)
+
+    // Display Balance
+    calcDisplayBalance(currentAccount.movements)
+
+    // Display Summary
+    calDisplaySummary(currentAccount)
+
+  }
+})
+
