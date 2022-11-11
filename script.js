@@ -109,7 +109,7 @@ let calcDisplayBalance = function (acc) {
   labelBalance.textContent = `${acc.balance} €`
 }
 
-
+//  Diplaying the Income , out and the interests
 let calDisplaySummary = function (acc) {
   let income = acc.movements
     .filter(mov => mov > 0)
@@ -134,7 +134,7 @@ let calDisplaySummary = function (acc) {
 
 
 
-
+//  Creating the username 
 let createUserName = function(accts) {
 
   accts.forEach((acc) => {
@@ -151,6 +151,7 @@ createUserName(accounts)
 // const accounts = [account1, account2, account3, account4];
 console.log(accounts);
 
+// Updating the UI 
 let UpdateUI = function(acc){
   // Display Movements
   displayMovements(acc.movements)
@@ -162,6 +163,8 @@ let UpdateUI = function(acc){
   calDisplaySummary(acc)
 }
 
+
+// Using the find method to find the current account
 let currentAccount;
 // Event Handler
 btnLogin.addEventListener('click' , function (e) {
@@ -186,7 +189,7 @@ btnLogin.addEventListener('click' , function (e) {
   }
 })
 
-
+//  Implementing the transfer  
 btnTransfer.addEventListener('click' , function(e) {
   e.preventDefault();
 
@@ -211,7 +214,7 @@ btnTransfer.addEventListener('click' , function(e) {
 })
 
 btnLoan.addEventListener('click' , function (e) {
-  e.preventDefault();
+  e.preventDefault(); 
 
   let amount = Number(inputLoanAmount.value);
 
@@ -250,6 +253,7 @@ btnClose.addEventListener('click' , function(e) {
 })
 
 
+//Implementing the  
 let sorted = false
 btnSort.addEventListener('click' , function(e) {
   e.preventDefault();
