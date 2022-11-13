@@ -253,7 +253,7 @@ btnClose.addEventListener('click' , function(e) {
 })
 
 
-//Implementing the  
+//Implementing the  Sort button
 let sorted = false
 btnSort.addEventListener('click' , function(e) {
   e.preventDefault();
