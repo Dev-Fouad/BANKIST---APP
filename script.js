@@ -129,12 +129,13 @@ let displayMovements = function (movements , sort = false) {
 }
   
 
-
+// Displaying the balance
 let calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc , mov) => acc + mov, 0)
 
   labelBalance.textContent = `${acc.balance} €`
 }
+
 
 //  Diplaying the Income , out and the interests
 let calDisplaySummary = function (acc) {
@@ -213,6 +214,7 @@ btnLogin.addEventListener('click' , function (e) {
 
   }
 })
+
 
 //  Implementing the transfer  
 btnTransfer.addEventListener('click' , function(e) {
