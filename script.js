@@ -210,14 +210,6 @@ currentAccount = account1
 UpdateUI(currentAccount)
 containerApp.style.opacity = 100;
 
-let now = new Date();
-let day = `${now.getDate() + 1}`.padStart(2, 0);
-let month = `${now.getMonth() + 1}`.padStart(2, 0);
-let year = now.getFullYear();
-let hour = now.getHours();
-let min = `${now.getMinutes()}`.padStart(2, 0);
-labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`
-
 
 btnLogin.addEventListener('click' , function (e) {
   // Prevent form from submitting
@@ -231,6 +223,15 @@ btnLogin.addEventListener('click' , function (e) {
     // Display UI and message
     labelWelcome.textContent = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
     containerApp.style.opacity = 100;
+
+    // Create current date and time.
+    let now = new Date();
+    let day = `${now.getDate() + 1}`.padStart(2, 0);
+    let month = `${now.getMonth() + 1}`.padStart(2, 0);
+    let year = now.getFullYear();
+    let hour = now.getHours();
+    let min = `${now.getMinutes()}`.padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`
 
     //Clear input fields
     inputLoginUsername.value = inputLoginPin.value = ''
@@ -261,6 +262,10 @@ btnTransfer.addEventListener('click' , function(e) {
       currentAccount.movements.push(-amount)
       receiverAcc.movements.push(amount)
 
+      // Add transfer Date
+      currentAccount.movementsDates.push(new Date().toISOString())
+      currentAccount.movementsDates.push(new Date().toISOString())
+
       // Update UI
       UpdateUI(currentAccount)
     }  
@@ -277,6 +282,9 @@ btnLoan.addEventListener('click' , function (e) {
 
     // Add movementt
     currentAccount.movements.push(amount);
+
+    // Add loan date
+    currentAccount.movementsDates.push(new Date().toISOString())
 
     // Update UI
     UpdateUI(currentAccount)
@@ -315,7 +323,7 @@ let sorted = false
 btnSort.addEventListener('click' , function(e) {
   e.preventDefault();
 
-  displayMovements(currentAccount.movements, !sorted)
+  displayMovements(currentAccount, !sorted)
   sorted = !sorted
 
 })
