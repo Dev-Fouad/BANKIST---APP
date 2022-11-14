@@ -172,11 +172,10 @@ let createUserName = function(accts) {
       .map((name) => name[0])
       .join('')
   })
-
 }
 createUserName(accounts)
-// const accounts = [account1, account2, account3, account4];
-console.log(accounts);
+// const accounts = [account1, account2];
+
 
 // Updating the UI 
 let UpdateUI = function(acc){
@@ -193,12 +192,11 @@ let UpdateUI = function(acc){
 
 // Using the find method to find the current account
 let currentAccount;
-// Event Handler
 btnLogin.addEventListener('click' , function (e) {
   // Prevent form from submitting
   e.preventDefault();
 
- // const accounts = [account1, account2, account3, account4];
+ // const accounts = [account1, account2];
   currentAccount = accounts.find((acc) => acc.username === inputLoginUsername.value)
   console.log(currentAccount);
 
@@ -240,6 +238,7 @@ btnTransfer.addEventListener('click' , function(e) {
     }  
 })
 
+// Implementing the loan button.
 btnLoan.addEventListener('click' , function (e) {
   e.preventDefault(); 
 
@@ -256,9 +255,10 @@ btnLoan.addEventListener('click' , function (e) {
   inputLoanAmount.value = '';
 })
 
+
+// Implementing tjhe close button
 btnClose.addEventListener('click' , function(e) {
   e.preventDefault();
-
 
   if (
     inputCloseUsername.value === currentAccount.username &&
@@ -277,6 +277,7 @@ btnClose.addEventListener('click' , function(e) {
 
   }
     inputCloseUsername.value = inputClosePin = ''
+
 })
 
 
@@ -289,4 +290,3 @@ btnSort.addEventListener('click' , function(e) {
   sorted = !sorted
 
 })
-
