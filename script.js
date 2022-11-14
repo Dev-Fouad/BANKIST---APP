@@ -106,21 +106,32 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 
-let displayMovements = function (movements , sort = false) {
+// Display Movements 
+let displayMovements = function (acc , sort = false) {
 
   containerMovements.innerHTML = '';
 
-  let movs = sort? movements.slice().sort((a,b) => a-b) : movements
+  let movs = sort 
+    ? acc.movements.slice().sort((a,b) => a-b) 
+    : acc.movements
   
   movs.forEach((mov , i) => {
 
     let type = mov > 0 ? 'deposit' : 'withdrawal'
 
+    let date = new Date(acc.movementsDates[i])
+    let day = `${date.getDate() + 1}`.padStart(2, 0);
+    let month = `${date.getMonth() + 1}`.padStart(2, 0);
+    let year = date.getFullYear();
+    let displayDate = `${day}/${month}/${year}`
+
+
     let html = `
 
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-      <div class="movements__value">${mov}€</div>
+      <div class="movements__date">${displayDate}</div>
+      <div class="movements__value">${mov.toFixed(2)}€</div>
     </div>
 
     `
@@ -133,7 +144,7 @@ let displayMovements = function (movements , sort = false) {
 let calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc , mov) => acc + mov, 0)
 
-  labelBalance.textContent = `${acc.balance} €`
+  labelBalance.textContent = `${acc.balance.toFixed(2)} €`
 }
 
 
@@ -142,12 +153,12 @@ let calDisplaySummary = function (acc) {
   let income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc , mov) => acc + mov , 0) 
-  labelSumIn.textContent = `${income}€`
+  labelSumIn.textContent = `${income.toFixed(2)}€`
 
   let Out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc,mov) => acc + mov, 0) 
-  labelSumOut.textContent = `${Math.abs(Out)}€`  
+  labelSumOut.textContent = `${Math.abs(Out).toFixed(2)}€`  
 
   let interest = acc.movements
     .filter(mov => mov > 0)
@@ -157,7 +168,7 @@ let calDisplaySummary = function (acc) {
       return int >= 1
     })
     .reduce((acc , int) => acc + int, 0)
-  labelSumInterest.textContent = `${interest}€`  
+  labelSumInterest.textContent = `${interest.toFixed(2)}€`  
 };
 
 
@@ -181,7 +192,7 @@ createUserName(accounts)
 // Updating the UI 
 let UpdateUI = function(acc){
   // Display Movements
-  displayMovements(acc.movements)
+  displayMovements(acc)
 
   // Display Balance
   calcDisplayBalance(acc)
@@ -193,6 +204,21 @@ let UpdateUI = function(acc){
 
 // Using the find method to find the current account
 let currentAccount;
+
+// FAKE ALWAYS LOGGED IN
+currentAccount = account1
+UpdateUI(currentAccount)
+containerApp.style.opacity = 100;
+
+let now = new Date();
+let day = `${now.getDate() + 1}`.padStart(2, 0);
+let month = `${now.getMonth() + 1}`.padStart(2, 0);
+let year = now.getFullYear();
+let hour = now.getHours();
+let min = `${now.getMinutes()}`.padStart(2, 0);
+labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`
+
+
 btnLogin.addEventListener('click' , function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -240,11 +266,12 @@ btnTransfer.addEventListener('click' , function(e) {
     }  
 })
 
+
 // Implementing the loan button.
 btnLoan.addEventListener('click' , function (e) {
   e.preventDefault(); 
 
-  let amount = Number(inputLoanAmount.value);
+  let amount = Math.floor(inputLoanAmount.value);
 
   if ( amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)){
 
@@ -258,7 +285,7 @@ btnLoan.addEventListener('click' , function (e) {
 })
 
 
-// Implementing tjhe close button
+// Implementing the close button
 btnClose.addEventListener('click' , function(e) {
   e.preventDefault();
 
@@ -288,7 +315,7 @@ let sorted = false
 btnSort.addEventListener('click' , function(e) {
   e.preventDefault();
 
-  displayMovements(currentAccount.movements , !sorted)
+  displayMovements(currentAccount.movements, !sorted)
   sorted = !sorted
 
 })
