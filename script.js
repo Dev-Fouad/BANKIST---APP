@@ -112,6 +112,11 @@ let formatMovementDates = function (date) {
 
     let DaysPassed = calcDaysPassed(new Date() , date)
     console.log(DaysPassed);
+
+ 
+    // if (DaysPassed === 0) return 'Today';
+    // if (DaysPassed === 1) return 'Yesterday';
+    // if (DaysPassed <= 7) return `${DaysPassed}`
     let day = `${date.getDate()}`.padStart(2, 0);
     let month = `${date.getMonth() + 1}`.padStart(2, 0);
     let year = date.getFullYear();
