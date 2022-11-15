@@ -125,7 +125,10 @@ let formatCur = function(value , locale , currency){
         currency: currency,
     }).format(value)
 }
-// Display Movements 
+
+
+
+// Display Movements   
 let displayMovements = function (acc , sort = false) {
 
   containerMovements.innerHTML = '';
@@ -170,12 +173,12 @@ let calDisplaySummary = function (acc) {
   let income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc , mov) => acc + mov , 0) 
-  labelSumIn.textContent = `${income.toFixed(2)}€`
+  labelSumIn.textContent = formatCur(income, acc.locale, acc.currency)
 
   let Out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc,mov) => acc + mov, 0) 
-  labelSumOut.textContent = `${Math.abs(Out).toFixed(2)}€`  
+  labelSumOut.textContent = formatCur(Math.abs(Out), acc.locale, acc.currency)
 
   let interest = acc.movements
     .filter(mov => mov > 0)
@@ -185,7 +188,7 @@ let calDisplaySummary = function (acc) {
       return int >= 1
     })
     .reduce((acc , int) => acc + int, 0)
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`  
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency)
 };
 
 
