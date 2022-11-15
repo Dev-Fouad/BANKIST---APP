@@ -106,6 +106,19 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 /////////////////////////////////////////////////
 
+//
+let formatMovementDates = function (date) {
+    let calcDaysPassed = (date1, date2) => Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)))
+
+    let DaysPassed = calcDaysPassed(new Date() , date)
+    console.log(DaysPassed);
+    let day = `${date.getDate()}`.padStart(2, 0);
+    let month = `${date.getMonth() + 1}`.padStart(2, 0);
+    let year = date.getFullYear();
+    return `${day}/${month}/${year}`
+ 
+}
+
 // Display Movements 
 let displayMovements = function (acc , sort = false) {
 
@@ -120,10 +133,7 @@ let displayMovements = function (acc , sort = false) {
     let type = mov > 0 ? 'deposit' : 'withdrawal'
 
     let date = new Date(acc.movementsDates[i])
-    let day = `${date.getDate() + 1}`.padStart(2, 0);
-    let month = `${date.getMonth() + 1}`.padStart(2, 0);
-    let year = date.getFullYear();
-    let displayDate = `${day}/${month}/${year}`
+    let displayDate = formatMovementDates(date)
 
 
     let html = `
@@ -313,7 +323,7 @@ btnClose.addEventListener('click' , function(e) {
     containerApp.style.opacity = 0;
 
   }
-    inputCloseUsername.value = inputClosePin = ''
+//     inputCloseUsername.value = inputClosePin = ''
 
 })
 
@@ -327,3 +337,11 @@ btnSort.addEventListener('click' , function(e) {
   sorted = !sorted
 
 })
+
+let future = new Date( 2037,10,19)
+console.log(future);
+
+let calcDaysPassed = (date1, date2) => Math.round((date2 - date1) / (1000 * 60 * 60 * 24))
+
+let day1 = calcDaysPassed(new Date(2037,3,4) ,new Date (2037 , 3, 14 , 10 ,8))
+console.log(day1);
