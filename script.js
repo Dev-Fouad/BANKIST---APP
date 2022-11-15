@@ -107,25 +107,24 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 
 //
-let formatMovementDates = function (date) {
+let formatMovementDates = function (date , locale) {
     let calcDaysPassed = (date1, date2) => Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)))
 
     let DaysPassed = calcDaysPassed(new Date() , date)
     console.log(DaysPassed);
-
  
     if (DaysPassed === 0) return 'Today';
     if (DaysPassed === 1) return 'Yesterday';
     if (DaysPassed <= 7) return `${DaysPassed} days ago.`
-    else {
-    let day = `${date.getDate()}`.padStart(2, 0);
-    let month = `${date.getMonth() + 1}`.padStart(2, 0);
-    let year = date.getFullYear();
-    return `${day}/${month}/${year}`
-    }
- 
+    return new Intl.DateTimeFormat(locale).format(date);
 }
 
+let formatCur = function(value , locale , currency){
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency,
+    }).format(value)
+}
 // Display Movements 
 let displayMovements = function (acc , sort = false) {
 
@@ -140,15 +139,16 @@ let displayMovements = function (acc , sort = false) {
     let type = mov > 0 ? 'deposit' : 'withdrawal'
 
     let date = new Date(acc.movementsDates[i])
-    let displayDate = formatMovementDates(date)
+    let displayDate = formatMovementDates(date , acc.locale)
 
+    let formattedMov = formatCur(mov ,acc.locale ,acc.currency)
 
     let html = `
 
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
       <div class="movements__date">${displayDate}</div>
-      <div class="movements__value">${mov.toFixed(2)}€</div>
+      <div class="movements__value">${formattedMov}</div>
     </div>
 
     `
@@ -160,8 +160,8 @@ let displayMovements = function (acc , sort = false) {
 // Displaying the balance
 let calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc , mov) => acc + mov, 0)
-
-  labelBalance.textContent = `${acc.balance.toFixed(2)} €`
+  let formattedBalance = formatCur(acc.balance ,acc.locale, acc.currency) 
+  labelBalance.textContent = `${formattedBalance}`
 }
 
 
@@ -228,6 +228,7 @@ UpdateUI(currentAccount)
 containerApp.style.opacity = 100;
 
 
+
 btnLogin.addEventListener('click' , function (e) {
   // Prevent form from submitting
   e.preventDefault();
@@ -243,19 +244,19 @@ btnLogin.addEventListener('click' , function (e) {
 
     // Create current date and time.
     let now = new Date();
-    let day = `${now.getDate() + 1}`.padStart(2, 0);
-    let month = `${now.getMonth() + 1}`.padStart(2, 0);
-    let year = now.getFullYear();
-    let hour = now.getHours();
-    let min = `${now.getMinutes()}`.padStart(2, 0);
-    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`
+    let options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        day: 'numeric',
+        month: 'numeric'
+    }
+    labelDate.textContent = new Intl.DateTimeFormat(currentAccount.locale , options).format(now)
 
     //Clear input fields
     inputLoginUsername.value = inputLoginPin.value = ''
     inputLoginPin.blur();
 
     UpdateUI(currentAccount)
-
   }
 })
 
@@ -281,7 +282,7 @@ btnTransfer.addEventListener('click' , function(e) {
 
       // Add transfer Date
       currentAccount.movementsDates.push(new Date().toISOString())
-      currentAccount.movementsDates.push(new Date().toISOString())
+      receiverAcc.movementsDates.push(new Date().toISOString())
 
       // Update UI
       UpdateUI(currentAccount)
