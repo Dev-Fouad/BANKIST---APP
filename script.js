@@ -222,13 +222,40 @@ let UpdateUI = function(acc){
 }
 
 
+let startLogOutTimer = function() {
+    let tick =  function () {
+        let min = String(Math.trunc(time / 60)).padStart(2, 0)
+        let sec = String(time % 60).padStart(2, 0);
+  
+        // In each call, print the remaining time to UI
+        labelTimer.textContent = `${min}:${sec}`
+  
+  
+        // When 0 seconds, stop timer and log out user
+        if (time == 0){
+          clearInterval(timer);
+          labelWelcome.textContent = 'Log in to get started'
+          containerApp.style.opacity = 0;
+        }
+
+        // Decrease is
+        time--;
+    }
+    // Set time to 5 minutes
+    let time = 30;
+
+    // Call the timer every second
+    tick() 
+    let timer = setInterval(tick ,1000)
+}
+
 // Using the find method to find the current account
 let currentAccount;
 
-// FAKE ALWAYS LOGGED IN
-currentAccount = account1
-UpdateUI(currentAccount)
-containerApp.style.opacity = 100;
+// // FAKE ALWAYS LOGGED IN
+// currentAccount = account1
+// UpdateUI(currentAccount)
+// containerApp.style.opacity = 100;
 
 
 
@@ -258,6 +285,8 @@ btnLogin.addEventListener('click' , function (e) {
     //Clear input fields
     inputLoginUsername.value = inputLoginPin.value = ''
     inputLoginPin.blur();
+
+    startLogOutTimer()
 
     UpdateUI(currentAccount)
   }
