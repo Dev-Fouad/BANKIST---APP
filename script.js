@@ -335,7 +335,7 @@ btnClose.addEventListener('click' , function(e) {
     containerApp.style.opacity = 0;
 
   }
-//     inputCloseUsername.value = inputClosePin = ''
+    inputCloseUsername.value = inputClosePin = ''
 
 })
 
@@ -349,11 +349,3 @@ btnSort.addEventListener('click' , function(e) {
   sorted = !sorted
 
 })
-
-let future = new Date( 2037,10,19)
-console.log(future);
-
-let calcDaysPassed = (date1, date2) => Math.round((date2 - date1) / (1000 * 60 * 60 * 24))
-
-let day1 = calcDaysPassed(new Date(2037,3,4) ,new Date (2037 , 3, 14 , 10 ,8))
-console.log(day1);
