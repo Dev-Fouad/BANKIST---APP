@@ -145,7 +145,7 @@ let displayMovements = function (acc , sort = false) {
     let displayDate = formatMovementDates(date , acc.locale)
 
     let formattedMov = formatCur(mov ,acc.locale ,acc.currency)
-
+ 
     let html = `
 
     <div class="movements__row">
