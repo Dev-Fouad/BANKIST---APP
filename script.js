@@ -242,21 +242,16 @@ let startLogOutTimer = function() {
         time--;
     }
     // Set time to 5 minutes
-    let time = 30;
+    let time = 400;
 
     // Call the timer every second
     tick() 
     let timer = setInterval(tick ,1000)
+    return timer
 }
 
 // Using the find method to find the current account
-let currentAccount;
-
-// // FAKE ALWAYS LOGGED IN
-// currentAccount = account1
-// UpdateUI(currentAccount)
-// containerApp.style.opacity = 100;
-
+let currentAccount, timer;
 
 
 btnLogin.addEventListener('click' , function (e) {
@@ -286,7 +281,8 @@ btnLogin.addEventListener('click' , function (e) {
     inputLoginUsername.value = inputLoginPin.value = ''
     inputLoginPin.blur();
 
-    startLogOutTimer()
+    if(timer) clearInterval(timer)
+    timer = startLogOutTimer()
 
     UpdateUI(currentAccount)
   }
@@ -318,6 +314,10 @@ btnTransfer.addEventListener('click' , function(e) {
 
       // Update UI
       UpdateUI(currentAccount)
+
+      // Reset timer
+      clearInterval(timer)
+      timer = startLogOutTimer();   
     }  
 })
 
@@ -338,9 +338,13 @@ btnLoan.addEventListener('click' , function (e) {
 
         // Update UI
         UpdateUI(currentAccount)
+
+        // Reset timer
+        clearInterval(timer)
+        timer = startLogOutTimer(); 
     },2500)
   }
-  inputLoanAmount.value = '';
+  inputLoanAmount.value = ''; 
 })
 
 
