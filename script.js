@@ -300,15 +300,16 @@ btnLoan.addEventListener('click' , function (e) {
   let amount = Math.floor(inputLoanAmount.value);
 
   if ( amount > 0 && currentAccount.movements.some((mov) => mov >= amount * 0.1)){
+    setTimeout(function(){
+        // Add movement
+        currentAccount.movements.push(amount);
 
-    // Add movementt
-    currentAccount.movements.push(amount);
+        // Add loan date
+        currentAccount.movementsDates.push(new Date().toISOString())
 
-    // Add loan date
-    currentAccount.movementsDates.push(new Date().toISOString())
-
-    // Update UI
-    UpdateUI(currentAccount)
+        // Update UI
+        UpdateUI(currentAccount)
+    },2500)
   }
   inputLoanAmount.value = '';
 })
