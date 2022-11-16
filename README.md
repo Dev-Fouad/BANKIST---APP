@@ -7,3 +7,4 @@ Also you can close the account to a new account..
 The password are js with the pin of 1111, jd with the pin of 2222.
 
 It's a great project of training Arrays..
+I used the new international Dates and number Api to format the dates and time in their locale.
